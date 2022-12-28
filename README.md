@@ -11,12 +11,15 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## JWT server
 
 `cd fake-api-jwt-json-server-master`
+
 `npm run start-auth`
 
 ## Employ data server
 
 `npm install -g json-server`
+
 `cd employee-server`
+
 `json-server -w employee.json`
 
 ## Code scaffolding
