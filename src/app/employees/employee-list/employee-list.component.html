@@ -1,0 +1,93 @@
+<nz-table #basicTable [nzData]="listOfEmployee" [nzFrontPagination]="false" [nzTotal]="totalPage"
+  [nzPageSize]="pageSize" [(nzPageIndex)]="curPage" (nzPageIndexChange)="getEmployeeList()"
+  [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Start Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; trackBy:trackById">
+      <td>{{ data.name }}</td>
+      <td>{{ data.gender === "1" ? "Male" : "Female"}}</td>
+      <td>{{ data.phone }}</td>
+      <td>{{ data.email }}</td>
+      <td>{{ data.startdate | date:"yyyy-MM-dd"}}</td>
+      <td>
+        <a (click)="showEditEmployeeModal( data.id )">Modify</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-popconfirm
+          nzPopconfirmTitle="Are you sure to delete?"
+          (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="bottom">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit employee" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="employeeEditForm" (ngSubmit)="submitEmployeeEditForm()">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>name</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="name" placeholder="name" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input your username!</ng-container>
+            <ng-container *ngIf="control.hasError('length')">The length should be between 3 to 20!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Gender</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="genderErrorTpl">
+          <nz-radio-group formControlName="gender">
+            <label nz-radio nzValue="1">Male</label>
+            <label nz-radio nzValue="0">Female</label>
+          </nz-radio-group>
+          <ng-template #genderErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input gender!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
+          <input nz-input formControlName="email" placeholder="email" type="email" />
+          <ng-template #emailErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
+            <ng-container *ngIf="control.hasError('required')">Please input your E-mail!</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7">Phone</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="phoneErrorTpl">
+          <input nz-input placeholder="phone" formControlName="phone" />
+        </nz-form-control>
+        <br />
+        <ng-template #phoneErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('pattern')">Phone format is not correct!</ng-container>
+        </ng-template>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7">Start Date</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="startDateErrorTpl">
+        <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="startdate"></nz-date-picker>
+        <br />
+        <ng-template #startDateErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('date')">Can't be later than today!</ng-container>
+        </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

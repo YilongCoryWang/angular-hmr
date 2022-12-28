@@ -1,0 +1,68 @@
+<nz-layout class="layout">
+  <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="logo" style="width: 100%;"/>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap['sub1']"
+        (nzOpenChange)="openHandler('sub1')"
+        nzTitle="Employees"
+        nzIcon="setting"
+      >
+        <ul>
+          <li nz-menu-item routerLink="/home/employee">Employee List</li>
+          <li nz-menu-item routerLink="/home/employee/add">Add Employee</li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap['sub2']"
+        (nzOpenChange)="openHandler('sub2')"
+        nzTitle="Role Management"
+        nzIcon="user"
+      >
+        <ul>
+          <li nz-menu-item>Role List</li>
+          <li nz-menu-item>Add Role</li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap['sub3']"
+        (nzOpenChange)="openHandler('sub3')"
+        nzTitle="Authentications"
+        nzIcon="smile-o"
+      >
+        <ul>
+          <li nz-menu-item>Employee List</li>
+          <li nz-menu-item>Add Employee</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div nz-row nzJustify="end">
+        <div nz-col nzSpan="4">
+          <a href="#"
+            nz-popconfirm
+            nzPopconfirmTitle="Are you sure delete this task?"
+            (nzOnConfirm)="logout()"
+            nzPopconfirmPlacement="bottom"
+          >
+            <span nz-icon nzType="logout" nzTheme="outline"></span>
+            &nbsp;Logout
+          </a>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>
